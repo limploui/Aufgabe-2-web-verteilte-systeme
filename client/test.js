@@ -37,6 +37,7 @@ function performRequest(request) {
 
         client.on("connect", () => {
             console.log("Verbunden");
+            console.log("Gesendete Request-Line:", request.split("\r\n")[0]);
             client.write(request, "latin1");
         });
 
@@ -67,6 +68,16 @@ function handleResponse(response) {
     const cacheLine = lines.find(line =>
         line.toLowerCase().startsWith("x-cache-status:")
     );
+
+    const keyLine = lines.find(line =>
+    line.toLowerCase().startsWith("x-debug-cache-key:")
+    );
+
+    console.log("Cache-Key:", keyLine);
+
+    // Neu:
+    console.log("HTTP-Status:", statusLine);
+    console.log("Cache-Status:", cacheLine);
 
     return {
         statusLine: statusLine,
